@@ -17,5 +17,22 @@ for(var i = 0; i < updateBtns.length; i++) {
 }
 
 function updateUserOrder(productId, action){
-    
+    var url = '/update_item/'
+    console.log('URL:', url)
+    fetch(url, {
+        method:'POST',
+        headers:{
+            'content-Type':'application/json',
+            'X-CSRFToken':csrftoken,
+        },
+        body:JSON.stringify({'productId': productId, action:'action'})
+    })
+
+    .then((response) => {
+        return response.json()
+    })
+
+    .then((data) => {
+        console.log('data:',data)
+    })
 }
