@@ -75,7 +75,7 @@ class OrderItem(models.Model):
         total = self.product.price * self.quantity
         return total
 
-
+#To update shipping address
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
