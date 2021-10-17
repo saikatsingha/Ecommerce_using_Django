@@ -80,7 +80,7 @@
 			document.getElementById('user-info').innerHTML = ''
 		}
 
-		if (shipping == False && user != 'AnonymousUser'){
+		if (shipping == 'False' && user != 'AnonymousUser'){
 			document.getElementById('form-wraper').classList.add("hidden");
 			document.getElementById('payment-info').classList.remove("hidden");
 		}
@@ -144,6 +144,9 @@
 			.then((data) => {
 				console.log('Success:', data);
 				alert('Transction completed');
+
+				cart = {}
+				document.cookie = 'cart='+ JSON.stringify(cart) + ";domain=;path=/"
 				window.location.href = "{% url 'store' %}"
 			})
 		}
