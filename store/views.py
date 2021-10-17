@@ -3,23 +3,19 @@ from .models import *
 from django.http import JsonResponse
 import json
 import datetime 
+from . utils import cookieCart, cartData
 
 
 # Create your views here.
 
 def store(request):
 
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
+    data = cartData(request)
 
-    else:
-        items = []
-        order = {'get_cart_items':0, 'get_cart_total':0, 'shipping': False}
-        cartItems = order['get_cart_items']
-
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+    
     products = Product.objects.all()
     context = {'products': products, 'cartItems': cartItems}
     return render(request, 'store/store.html', context)    
@@ -32,9 +28,11 @@ def cart(request):
         cartItems = order.get_cart_items
 
     else:
-        items = []
-        order = {'get_cart_items':0, 'get_cart_total':0, 'shipping': False}
-        cartItems = order['get_cart_items']
+       cookieData = cookieCart(request)
+       cartItems = cookieData['cartItems']
+       order = cookieData['order']
+       items = cookieData['items']
+
 
 
     context = {'items':items, 'order':order, 'cartItems': cartItems}
@@ -48,9 +46,10 @@ def checkout(request):
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
     else:
-        items = []
-        order = {'get_cart_items':0, 'get_cart_total':0,'shipping': False}
-        cartItems = order['get_cart_items']
+       cookieData = cookieCart(request)
+       cartItems = cookieData['cartItems']
+       order = cookieData['order']
+       items = cookieData['items']
 
     context = {'items':items, 'order':order, 'cartItems': cartItems}
     return render(request, 'store/checkout.html', context)
