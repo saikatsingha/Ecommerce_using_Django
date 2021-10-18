@@ -46,7 +46,18 @@
 				<small>Paypal Options</small>
 				<div id="paypal-button-container"></div>
 				<!-- <button id="make-payment">Make Payment</button> -->
+				<form action="{% url 'thankyou' %}" method="post">
+					{% csrf_token %}
+					<h2 >Buy for ${{ order.get_cart_total|floatformat:2 }}</h2>
+					<script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+						data-key="{{key}}"
+						data-description="Stripe Payment"
+						data-amount="{{ order.get_cart_total|floatformat:2 }}"
+						data-locale="auto">
+					</script>
+				</form>
 			</div>
+			
 			
 		</div>
 
